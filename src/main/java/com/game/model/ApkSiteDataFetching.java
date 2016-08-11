@@ -48,7 +48,7 @@ public class ApkSiteDataFetching {
 			String size = s.get(i + 1); // end of getting size
 
 			//getting download link
-			String downLink = doc.getElementsByClass("btn-md").select("[rel=nofollow]").attr("href");
+			String downLink = doc.getElementsByClass("btn-md").attr("href");
 			if (downLink.contains("http") == false) // checking whether download url/link contains "http"
 				downLink = ("http:").concat(downLink.trim());
 

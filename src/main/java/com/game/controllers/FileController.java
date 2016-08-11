@@ -72,6 +72,7 @@ public class FileController {
 	String temp = "";
 	String msg="started";
 	int progress = 0;
+	int count;
 	int totoalGames=0;
 	boolean status = true;
 	boolean psStatus = true;
@@ -136,9 +137,10 @@ public class FileController {
 				 FileReader frCount = new FileReader("/home/bridgelabz6/Pictures/files/"+mpf.getOriginalFilename());
 				 BufferedReader brCount = new BufferedReader(frCount);
 					while (brCount.readLine()!=null) {
-						totoalGames++;
+						count++;
 						}
-					totoalGames=totoalGames-1;
+					totoalGames=count-1;
+					count=0;
 					fileMeta.setTotalGames(totoalGames);
 					System.out.println("totoalGames:"+totoalGames);
 					brCount.close();
@@ -155,7 +157,7 @@ public class FileController {
 					System.out.println("file is empty");
 				} else {
 					line=br.readLine();					
-					while (line != null) {
+					for(progress=0;progress<totoalGames;progress++) {
 						server.addEventListener("send", Message.class, new DataListener<Message>() {
 				            @Override
 				            public void onData(SocketIOClient client, Message data, AckRequest ackSender) throws Exception {
@@ -264,10 +266,10 @@ public class FileController {
 
 						// getting play store package name
 						String pack = psdf.getPackage(playStoreDetails);
-
+						System.out.println("reach before apk");
 						// getting apk-dl site data
 						apkSiteDetails = asdf.createApkSiteDetails(pack);
-
+						System.out.println("reach after apk"+apkSiteDetails);
 						// handling exception in apk site details
 						if (apkSiteDetails == null) {
 							try {
@@ -295,7 +297,7 @@ public class FileController {
 							}
 							continue;
 						} // end of handling in apk-dl
-
+						System.out.println("reach after apk exception");
 						
 						// creating csv file of apk-dl site details
 						status = asdf.createCsv(apkSiteDetails,mpf.getOriginalFilename());
@@ -327,7 +329,6 @@ public class FileController {
 							continue;
 						}
 						gameJsoupDaoImp.add(playStoreDetails, apkSiteDetails);//storing jsoup data in database
-						progress++;
 						System.out.println("Main progress:"+Integer.toString(progress));
 					} // end of while
 				} // end of else
@@ -342,10 +343,12 @@ public class FileController {
 			//progress=0;
 			 System.out.println("End");
 		 }
-		 server.stop();
+		 	
 	        server.addDisconnectListener(new DisconnectListener() {
 	            @Override
 	            public void onDisconnect(SocketIOClient client) {
+	            	server.stop();
+	            	client.disconnect();
 	                System.out.println("onDisconnected");
 	            }
 	        });

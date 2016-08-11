@@ -145,18 +145,19 @@
 		    <version>1.1.0</version>
 		</dependency>
 		
+		<!-- web socket -->
          <dependency>
             <groupId>com.corundumstudio.socketio</groupId>
             <artifactId>netty-socketio</artifactId>
             <version>1.7.1</version>
         </dependency>
         
-         <!-- web socket -->
-		<dependency>
+         
+<!-- 		<dependency>
 		    <groupId>javax.websocket</groupId>
 		    <artifactId>javax.websocket-api</artifactId>
 		    <version>1.1</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>junit</groupId>

@@ -1,3 +1,4 @@
+
 window.onload = function () {
 
     var messages = [];
@@ -6,7 +7,6 @@ window.onload = function () {
     var content = document.getElementById("content");
     var name = document.getElementById("name");
     var fileupload=document.getElementById("fileupload");
-
     var socket = io.connect('http://localhost:3400', {
         'reconnection delay': 1000,
         'force new connection': true

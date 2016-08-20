@@ -6,6 +6,7 @@ com/game/model/PlayStoreUrlFetching.class
 com/game/dto/JsoupData.class
 com/game/socket/Server.class
 com/game/model/FileStreaming.class
+com/game/dto/Count.class
 com/game/controllers/FileController.class
 com/mqtt/MqttPublishSample.class
 com/game/dao/GameJsoupDao.class
@@ -15,5 +16,6 @@ com/game/model/MqttPublishSample.class
 com/game/socket/Server$2.class
 com/game/dao/GameJsoupDaoImp.class
 com/game/controllers/FileController$3.class
+com/game/controllers/AjaxFileController.class
 com/game/socket/Server$3.class
 com/game/model/PlayStoreDataFetching.class

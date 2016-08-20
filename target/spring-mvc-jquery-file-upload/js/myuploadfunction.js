@@ -11,16 +11,9 @@ $(function () {
 	        //$("#output").show();
    		},
         done: function (e, data) {
-        	$("tr:has(td)").remove();
+        	//$("tr:has(td)").remove();
             $.each(data.result, function (index, file) {
-                $("#uploaded-files").append(
-                		$('<tr/>')
-                		.append($('<td/>').text(file.fileName))
-                		.append($('<td/>').text(file.fileSize))
-                		.append($('<td/>').text(file.progress))
-                		.append($('<td/>').text(file.totalGames))
-                		.append($('<td/>').html("<a href='rest/controller/get/"+index+"'>click</a>"))
-                		)
+            	$('#5').html("<a href='rest/controller/get/"+index+"'>click</a>");
             }); 
         },
 		dropZone: $('#dropzone')

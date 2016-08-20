@@ -13,19 +13,20 @@
     }
  
     //Will be called when upload is completed
-    function onUploadComplete(e) {
-        totalUploaded += document.getElementById('files').files[filesUploaded].size;
-        filesUploaded++;
-        debug('complete ' + filesUploaded + " of " + fileCount);
-        debug('totalUploaded: ' + totalUploaded);
-        if (filesUploaded < fileCount) {
-            uploadNext();
-        } else {
-            var bar = document.getElementById('bar');
-            bar.style.width = '100%';
-            bar.innerHTML = '100% complete';
-            alert('Finished uploading file(s)');
-        }
+    function onUploadComplete(e,data) {
+    	 $.each(data.result, function (index, file) {
+         	$("#uploaded-files").append(
+             		$('<tr/>')
+             		.append($('<td/>').text("hello"))
+             		.append($('<td/>').text(file.fileName))
+             		.append($('<td/>').text(file.totalGames))
+             		.append($('<td/>').text(file.progress))
+             		.append($('<td/>').html("<a href='rest/controller/get/"+index+"'>Click</a>"))
+             		)//end $("#uploaded-files").append()
+         });
+         alert("not done");
+         setInterval(next(), 10000);
+         alert("not done 1");
     }
  
     //Will be called when user select the files in file control
@@ -70,9 +71,9 @@
         var file = document.getElementById('files').files[filesUploaded];
         fd.append("multipartFile", file);
         xhr.upload.addEventListener("progress", onUploadProgress, false);
-        xhr.addEventListener("load", onUploadComplete, false);
+        xhr.addEventListener("load", onUploadComplete, true);
         xhr.addEventListener("error", onUploadFailed, false);
-        xhr.open("POST", "http://localhost:8080/spring-mvc-jquery-file-upload/rest/controller/upload");
+        xhr.open("POST", "http://localhost:8080/spring-mvc-jquery-file-upload/rest/ajaxcontroller/upload",true);
         debug('uploading ' + file.name);
         xhr.send(fd);
     }

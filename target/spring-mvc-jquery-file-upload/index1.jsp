@@ -10,7 +10,7 @@
 <script src="js/jquery.fileupload.js"></script>
 
 <script src="./js/socket.io/socket.io.js"></script>
-<script src="./js/chat.js"></script>
+<script src="./js/socketdemo.js"></script>
 
 <!-- bootstrap just to have good looking page -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -40,17 +40,6 @@
 	
 	
 </div>
-	<table id="uploaded-files2" style="display:none" class="table">
-		<tr>
-			<th>File Name</th>
-			<th>File Size</th>
-			<th>No of game in files</th>
-			<th>Progress</th>
-			<th>Download</th>
-		</tr>
-	</table>
-
-
 	<table id="uploaded-files" class="table">
 		<tr>
 			<th>File Name</th>
@@ -63,6 +52,7 @@
 		<td><div id="2"></div></td>
 		<td><div id="3"></div></td>
 		<td><div id="4"></div></td>
+		<td><div id="5"></div></td>
 	</table>
 	    
 </body> 

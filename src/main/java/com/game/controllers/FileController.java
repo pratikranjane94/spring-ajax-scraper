@@ -266,10 +266,10 @@ public class FileController {
 
 						// getting play store package name
 						String pack = psdf.getPackage(playStoreDetails);
-						System.out.println("reach before apk");
+
 						// getting apk-dl site data
 						apkSiteDetails = asdf.createApkSiteDetails(pack);
-						System.out.println("reach after apk"+apkSiteDetails);
+
 						// handling exception in apk site details
 						if (apkSiteDetails == null) {
 							try {
@@ -297,7 +297,7 @@ public class FileController {
 							}
 							continue;
 						} // end of handling in apk-dl
-						System.out.println("reach after apk exception");
+
 						
 						// creating csv file of apk-dl site details
 						status = asdf.createCsv(apkSiteDetails,mpf.getOriginalFilename());

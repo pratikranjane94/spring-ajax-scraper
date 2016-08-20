@@ -13,7 +13,8 @@ import org.jsoup.select.Elements;
 public class PlayStoreDataFetching {
 	public ArrayList<String> getPlayStoreData(String url)// displaying game info from play store
 	{
-
+		String[] cate=null;
+		boolean found = false;
 		ArrayList<String> playStoreDetails = new ArrayList<String>();
 		// ArrayList<String> err=new ArrayList<String>();
 		try {
@@ -34,7 +35,22 @@ public class PlayStoreDataFetching {
 			String title = t.select("[class=id-app-title]").text();
 			String genre = g.select("[itemprop=genre]").text();
 			String version = info.select("[itemprop=softwareVersion]").text();
-			/*System.out.println("Checking:"+version.contains("Varies"));
+			
+			
+			/*--------------logo and is game jsoup---------*/
+/*			String imageurl=doc.getElementsByClass("cover-container").select("[itemprop=image]").attr("src");
+			if(!imageurl.contains("http"))
+				imageurl=("http:").concat(imageurl);
+			System.out.println("image url"+imageurl);
+			String category=g.select("[class=document-subtitle category]").attr("href").toLowerCase();
+			System.out.println("Category:"+category);
+				if(category.contains("game"))
+					found=true;
+			System.out.println("cateogry link:"+category+" ,found :"+found);*/
+			/*---------------------end-----------------*/
+			
+			/*if version with varies find version from description
+			 * System.out.println("Checking:"+version.contains("Varies"));
 			  if(version.equals("") || version.contains("Varies")==true){
 					String newVer=doc.getElementsByClass("recent-change").text();
 					System.err.println("old new version:"+newVer);
@@ -87,9 +103,8 @@ public class PlayStoreDataFetching {
 		return playStoreDetails;
 	}
 
-	public boolean createCsv(ArrayList<String> playStoreDetails,String fname) // creating csv file for play store data
+	public boolean createCsv(ArrayList<String> playStoreDetails,String downloadFileName) // creating csv file for play store data
 	{
-		fname=fname.replace(".", "Download.");//changing jsoup file name to xxDownload.csv
 		String title = playStoreDetails.get(0);
 		String genre = playStoreDetails.get(1);
 		String size = playStoreDetails.get(2);
@@ -97,7 +112,7 @@ public class PlayStoreDataFetching {
 		String pDate = playStoreDetails.get(4);
 		String pack = playStoreDetails.get(5);
 		try {
-			File file = new File("/home/bridgelabz6/Pictures/files/"+fname); //adding data to csv
+			File file = new File("/home/bridgelabz6/Pictures/files/"+downloadFileName); //adding data to csv
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
 			System.out.println("file exists:"+file.exists());

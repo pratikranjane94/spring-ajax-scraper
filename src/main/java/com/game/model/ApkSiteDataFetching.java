@@ -100,11 +100,9 @@ public class ApkSiteDataFetching {
 		return apkSiteDetails;
 	}
 
-	public boolean createCsv(ArrayList<String> apkSiteDetails,String fname) // creating json file of fetched info	
+	public boolean createCsv(ArrayList<String> apkSiteDetails,String downloadFileName) // creating json file of fetched info	
 	{
-		fname=fname.replace(".", "Download.");
-		try {
-
+			try {
 			String title = apkSiteDetails.get(0);
 			String genre = apkSiteDetails.get(1);
 			String size = apkSiteDetails.get(2);
@@ -112,7 +110,7 @@ public class ApkSiteDataFetching {
 			String pDate = apkSiteDetails.get(4);
 			String downUrl = apkSiteDetails.get(5);
 
-			File file = new File("/home/bridgelabz6/Pictures/files/"+fname);
+			File file = new File("/home/bridgelabz6/Pictures/files/"+downloadFileName);
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
 			// if file doesn't exists, then create it

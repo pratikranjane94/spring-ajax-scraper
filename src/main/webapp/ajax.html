@@ -15,27 +15,35 @@
 
 <!-- we code these -->
 <link href="css/dropzone.css" type="text/css" rel="stylesheet" />
-<script src="js/myuploadfunction.js"></script>
+<script src="js/myuploadfunction1.js"></script>
 </head>
 
 <body>
-<h1>Spring MVC - jQuery File Upload</h1>
-<div style="width:500px;padding:20px">
 
-	<input id="fileupload" type="file" name="files[]" data-url="http://localhost:8080/spring-mvc-jquery-file-upload/rest/controller/upload" multiple>
-	
+<h1>Game Jsoup Generator</h1>
+<div style="width:500px;padding:20px">
+<form id="form1">
+	<input id="file" type="file" name="file">
+	<input type="button" id="button" value="Upload" onclick="callAjax()">
+	</form>
 	<div id="dropzone" class="fade well">Drop files here</div>
 	
 	<div id="progress" class="progress">
     	<div class="bar" style="width: 0%;"></div>
 	</div>
-
+	<div id="info"></div>
 	<table id="uploaded-files" class="table">
 		<tr>
 			<th>File Name</th>
-			<th>File Size</th>
-			<th>File Type</th>
+			<th>Total Games</th>
+			<th>Process</th>
 			<th>Download</th>
+		</tr>
+		<tr>
+			<td><div id="1"></div></td>
+			<td><div id="2"></div></td>
+			<td><div id="3"></div></td>
+			<td><div id="4"></div></td>
 		</tr>
 	</table>
 	

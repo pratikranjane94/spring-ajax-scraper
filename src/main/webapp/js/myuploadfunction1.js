@@ -1,5 +1,22 @@
 var req;
 
+/*$(function () {
+    $('#file').fileupload({
+        dataType: 'json',                
+        progressall: function (e, data) {
+	        var progress = parseInt(data.loaded / data.total * 100, 10);
+	        $('#progress .bar').css(
+	            'width',
+	            progress + '%'
+	        );
+   		},
+        done: function (e, data) {
+        	alert("done")
+        },
+		dropZone: $('#dropzone')
+    });
+});*/
+
 function callAjax() {
     	req=$.ajax({
     	type:"POST",
@@ -8,18 +25,21 @@ function callAjax() {
         enctype: 'multipart/form-data',
         processData: false,
         contentType: false,
+        
+        //success function
         success: function (data) {
-        	console.log("Success Request:",req)
+        	//console.log("Success Request:",req)
         	$('#button').prop('disabled', true);
         	var file=new FormData(document.getElementById("form1"));
         	$('#info').html("File Uploaded ! Work is in Progress.!");
-        	console.log(file.name);
-        	console.log("done");
+        	
+        	//console.log("done");
         	console.log("data",data)
-        	alert("inside success")
+        	//alert("inside success")
             $.each(data, function (index, file) {
-            	console.log("progress")
-            	alert("inside each")
+            	//console.log("progress")
+            	//alert("inside each")
+            	if(data!=null){
             	$("#1").html(file.fileName);
             	$("#2").html(file.totalGames);
             	$("#3").html(file.progress);
@@ -29,22 +49,26 @@ function callAjax() {
             	console.log("tot:",totl);
             	console.log("prog:",prog);
             	
-            	var progress = parseInt(prog / totl * 100, 10);
+            	var progress = parseInt(prog / totl * 100,10);
+            	console.log("progress done percentage:",progress)
+            	//alert("progress",progress);
     	        $('#progress .bar').css(
     	            'width',
     	            progress + '%'
     	        );
-            	
-                		if(prog<totl-1)
+            	}
+            	if(progress==100)
+            		{
+            		$('#info').html("JSOUP Completed");
+            		}
+                		if(prog<totl)
                 			{
-                			alert("start");
+                			alert("1 loop");
                 			callAjax();
                 			}
                 		else
                 			{
-                			alert("stop");
-                			req.abort();
-                			stopAjax();
+                			return false;
                 			}
             });
             
@@ -52,9 +76,4 @@ function callAjax() {
 		dropZone: $('#dropzone')
     });
 }
-function stopAjax()
-{
-	$('#info').html("<b>Completed</b>");
-	console.log("Request:",req)
-	req.abort();
-}
+

@@ -77,7 +77,7 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 
 	// gives last progress of given file
 	@SuppressWarnings("rawtypes")
-	public int check(String fileName, int id) {
+	public int checkProgress(String fileName, int id) {
 		Count count = new Count();
 		int tot = 0;
 		session = sessionFactory.openSession();
@@ -85,7 +85,6 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 		query.setString("fileName", fileName);
 		query.setInteger("id", id);
 		query.setMaxResults(1);
-		// System.out.println("Last progress:"+query);
 		List list = query.list();
 		for (int i = 0; i < list.size(); i++) {
 			count = (Count) list.get(i);
@@ -113,18 +112,20 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 		System.out.println("Last id(db):" + id);
 		return id;
 	}
+	
 	//checks last id in database
 	@SuppressWarnings("rawtypes")
 	public int checkLastId() {
 		Count count = new Count();
 		int id = 0;
 		session = sessionFactory.openSession();
-		Query query = session.createQuery("from Count order by no DESC");
+		Query query = session.createQuery("from Count order by id DESC");
 		query.setMaxResults(1);
 		// System.out.println("Last progress:"+query);
 		List list = query.list();
 		for (int i = 0; i < list.size(); i++) {
 			count = (Count) list.get(i);
+			count.toString();
 		}
 		id = count.getId();
 		System.out.println("last id in database regardless of filename:" + id);
@@ -137,13 +138,14 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 		Count count = new Count();
 		String lastFileName;
 		session = sessionFactory.openSession();
-		Query query = session.createQuery("from Count order by no DESC");
+		Query query = session.createQuery("from Count order by id DESC");
 		query.setMaxResults(1);
 		List list = query.list();
 		for (int i = 0; i < list.size(); i++) {
 			count = (Count) list.get(i);
 		}
 		lastFileName = count.getFileName();
+		System.out.println("last file Name:"+lastFileName);
 		return lastFileName;
 	}
 

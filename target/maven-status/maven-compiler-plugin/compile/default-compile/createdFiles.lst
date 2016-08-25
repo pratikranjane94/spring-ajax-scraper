@@ -6,6 +6,7 @@ com/game/model/PlayStoreUrlFetching.class
 com/game/dto/JsoupData.class
 com/game/socket/Server.class
 com/game/model/FileStreaming.class
+com/game/model/GameNotFound.class
 com/game/dto/Count.class
 com/game/controllers/FileController.class
 com/mqtt/MqttPublishSample.class

@@ -137,4 +137,9 @@ public void setDownloadLink(String downloadLink) {
 	this.downloadLink = downloadLink;
 }
 
+@Override
+public String toString() {
+	return "Count [id=" + id + ", no=" + no + ", fileName=" + fileName + ", title=" + title + "]";
+}
+
 }

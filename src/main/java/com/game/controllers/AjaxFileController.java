@@ -64,7 +64,12 @@ public class AjaxFileController {
 	public @ResponseBody ArrayList<FileMeta> upload(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException {
 		System.out.println("new ajax file controller");
 
-		//files.clear();
+		try {
+			if(gameJsoupDao.checkProgress(fileName,id)!=totoalGames)
+			files.remove(0);
+		} catch (Exception e) {
+			System.out.println("File not found");
+		}
 		//---------------Iterator for multiple files-----------------
 		
 		 Iterator<String> itr =  request.getFileNames();

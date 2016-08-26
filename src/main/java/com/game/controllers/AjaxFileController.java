@@ -220,26 +220,29 @@ public class AjaxFileController {
 			 {
 				 String fileNameID=fileName.replace(".",Integer.toString(id)+".");
 				 String downloadFileNameID=downloadFileName.replace(".",Integer.toString(id)+".");
-				 System.out.println("updated filename with id:"+fileNameID);
-				 gameJsoupDao.update(fileNameID, id);
 				 fileMeta.setDownloadFileName(downloadFileName.replace(".", Integer.toString(id)+"."));
+				 System.out.println("updated filename with id:"+fileNameID);
+				 
+				 gameJsoupDao.update(fileNameID, id);
+				 
 				 File oldfile =new File("/home/bridgelabz6/Pictures/files/"+fileName);
 			     File newfile =new File("/home/bridgelabz6/Pictures/files/"+fileNameID);
 			     
-			     File oldDfile =new File("/home/bridgelabz6/Pictures/files/"+downloadFileName);
-			     File newDfile =new File("/home/bridgelabz6/Pictures/files/"+downloadFileNameID);
+			     File oldDownloadfile =new File("/home/bridgelabz6/Pictures/files/"+downloadFileName);
+			     File newDownloadfile =new File("/home/bridgelabz6/Pictures/files/"+downloadFileNameID);
 
-			        if(oldfile.renameTo(newfile)){
+			     //renaming old file name to new
+			        if(oldfile.renameTo(newfile))
 			            System.out.println("File renamed");
-			        }else{
+			        else
 			            System.out.println("Sorry! the file can't be renamed");
-			        }
-			        if(oldDfile.renameTo(newDfile)){
+			        
+			     //renaming old download file name to new
+			        if(oldDownloadfile.renameTo(newDownloadfile))
 			            System.out.println("File renamed");
-			        }else{
+			        else
 			            System.out.println("Sorry! the file can't be renamed");
-			        }
-				//break;
+			        
 				 return null;
 			 }
 			 else{
@@ -248,13 +251,16 @@ public class AjaxFileController {
 					 id=id+1;
 				 }
 				 
+				 //inserting all data into database
 				 gameJsoupDao.insert(id,no+1,fileName,playStoreDetails,apkSiteDetails);
 			 }
+			 
+			 //setting current progress of file
 			 fileMeta.setProgress(gameJsoupDao.checkProgress(fileName,id));
+			 
 			 //add to files
 			 files.add(fileMeta);
 			 System.out.println("comparison"+gameJsoupDao.checkProgress(fileName,id)+"total games"+totoalGames);
-			 System.out.println("End");
 			 System.out.println("----------------------------------------End Of Program-------------------------------------------------");
 		 }
 		return files;

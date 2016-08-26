@@ -78,16 +78,12 @@ public class AjaxFileController {
 		 // get each file
 		 while(itr.hasNext()){
 			 
-			 //get next multipart file and its information
+			 //get MULTIPART file and its information
 			 
 			 mpf = request.getFile(itr.next()); 
 			 //System.out.println("file:"+request.getFile("files"));
 			 //System.out.println("file Name"+request.getFile("files").getOriginalFilename());
-			 System.out.println(mpf.getOriginalFilename() +" uploaded! "+files.size());	
-
-			 //if files > 10 remove the first from the list
-			 //if(files.size() >= 10)
-				 //files.pop();
+			 System.out.println(mpf.getOriginalFilename() +" uploaded! ");	
 			 
 			//---------------end of iterator for multiple files-----------------
 			 
@@ -101,7 +97,7 @@ public class AjaxFileController {
 			 try {
 				fileMeta.setBytes(mpf.getBytes());
 				
-				//Copy file to local disk
+				//Copying file to local disk
 				FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream("/home/bridgelabz6/Pictures/files/"+mpf.getOriginalFilename()));
 				
 				
@@ -113,6 +109,8 @@ public class AjaxFileController {
 						}
 					totoalGames=count-1;
 					count=0;
+					
+					//setting total games
 					fileMeta.setTotalGames(totoalGames);
 					System.out.println("totoalGames:"+totoalGames);
 					brCount.close();
@@ -137,7 +135,7 @@ public class AjaxFileController {
 					if(gameJsoupDao.checkLastFileName().equals(fileName))
 						id=gameJsoupDao.checkId(fileName);
 					else{
-						//if different(i.e new) file is uploaded assign new id(i.e increase id)
+						//if filename not matched, different(i.e new) file is uploaded assign new id(i.e increase id)
 						id=gameJsoupDao.checkLastId();
 						id=id+1;
 					}
@@ -147,10 +145,10 @@ public class AjaxFileController {
 					System.out.println("file is empty");
 				} else {
 					
-					//Until no of game completed are less than total games create JSOUP 
+					//Until no of game completed are less than total games, create JSOUP 
 				    if(gameJsoupDao.checkProgress(fileName,id)<totoalGames){
 				    	
-				    	//checking last game completed and read next game name
+				    	//checking last game completed and readng next game name
 				    	for (int i = 0; i < gameJsoupDao.checkProgress(fileName,id)+1; i++) {
 							line=br.readLine();
 						}
@@ -161,7 +159,9 @@ public class AjaxFileController {
 						line=gname[1];			
 						System.out.println("Game Name= " + line);	
 						
-						url = purl.findUrl(line); //getting URL for game
+						//getting URL for game
+						url = purl.findUrl(line);
+						
 						line = br.readLine();
 
 						// exception handling if URL not found
@@ -181,6 +181,7 @@ public class AjaxFileController {
 						// creating CSV file of play store data
 						psStatus = psdf.createCsv(playStoreDetails,downloadFileName);
 						
+						// handling exception in creating play store data CSV file
 						if (psStatus == false) {
 								gameNotFound.addGameNotFoundInFile("PlayStore", temp, downloadFileName);
 						}
@@ -195,12 +196,11 @@ public class AjaxFileController {
  						if (apkSiteDetails == null) {
 							gameNotFound.addGameNotFoundInFile("DlApk", temp, downloadFileName);
 						} // end of handling in APK-DL
-
 						
 						// creating CSV file of APK-DL site details
 						status = asdf.createCsv(apkSiteDetails,downloadFileName);
 						
-						// handling exception in APK site details
+						// handling exception in creating APK-DL data CSV file
 						if (status == false) {
 							gameNotFound.addGameNotFoundInFile("DlApk", temp, downloadFileName);
 						}
@@ -208,8 +208,6 @@ public class AjaxFileController {
 				    
 					no=gameJsoupDao.checkProgress(fileName,id);
 					System.out.println("current progress:"+gameJsoupDao.checkProgress(fileName,id));
-					//fileMeta.setProgress(no);
-					//System.out.println("no increment:"+(no+1));
 					
 				} // end of else
 				br.close();

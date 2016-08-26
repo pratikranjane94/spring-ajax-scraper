@@ -218,9 +218,27 @@ public class AjaxFileController {
 			 
 			 if(gameJsoupDao.checkProgress(fileName,id)>=totoalGames)
 			 {
-				 String fileNameID=fileName.concat(Integer.toString(id));
+				 String fileNameID=fileName.replace(".",Integer.toString(id)+".");
+				 String downloadFileNameID=downloadFileName.replace(".",Integer.toString(id)+".");
 				 System.out.println("updated filename with id:"+fileNameID);
 				 gameJsoupDao.update(fileNameID, id);
+				 fileMeta.setDownloadFileName(downloadFileName.replace(".", Integer.toString(id)+"."));
+				 File oldfile =new File("/home/bridgelabz6/Pictures/files/"+fileName);
+			     File newfile =new File("/home/bridgelabz6/Pictures/files/"+fileNameID);
+			     
+			     File oldDfile =new File("/home/bridgelabz6/Pictures/files/"+downloadFileName);
+			     File newDfile =new File("/home/bridgelabz6/Pictures/files/"+downloadFileNameID);
+
+			        if(oldfile.renameTo(newfile)){
+			            System.out.println("File renamed");
+			        }else{
+			            System.out.println("Sorry! the file can't be renamed");
+			        }
+			        if(oldDfile.renameTo(newDfile)){
+			            System.out.println("File renamed");
+			        }else{
+			            System.out.println("Sorry! the file can't be renamed");
+			        }
 				//break;
 				 return null;
 			 }

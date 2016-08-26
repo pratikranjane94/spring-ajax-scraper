@@ -261,7 +261,7 @@ public class AjaxFileController {
 			 //add to files
 			 files.add(fileMeta);
 			 System.out.println("comparison"+gameJsoupDao.checkProgress(fileName,id)+"total games"+totoalGames);
-			 System.out.println("----------------------------------------End Of Program------------------------------------------------");
+			 System.out.println("---------------------------------------End Of Program------------------------------------------------");
 		 }
 		return files;
 	}

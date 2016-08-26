@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -220,9 +219,10 @@ public class AjaxFileController {
 			 {
 				 String fileNameID=fileName.replace(".",Integer.toString(id)+".");
 				 String downloadFileNameID=downloadFileName.replace(".",Integer.toString(id)+".");
-				 fileMeta.setDownloadFileName(downloadFileName.replace(".", Integer.toString(id)+"."));
-				 System.out.println("updated filename with id:"+fileNameID);
 				 
+				 fileMeta.setDownloadFileName(downloadFileNameID);
+				 System.out.println("updated filename with id:"+fileNameID);
+				 System.out.println("before download file name:"+fileMeta.getDownloadFileName());
 				 gameJsoupDao.update(fileNameID, id);
 				 
 				 File oldfile =new File("/home/bridgelabz6/Pictures/files/"+fileName);
@@ -267,28 +267,24 @@ public class AjaxFileController {
 	}
 	
 	//displaying file to download
-	@RequestMapping(value = "/get/{value}", method = RequestMethod.GET)
-	 public void get(HttpServletResponse response,@PathVariable String value) throws FileNotFoundException{
-		 FileMeta getFile = files.get(Integer.parseInt(value));
+	@RequestMapping(value = "/get", method = RequestMethod.GET)
+	 public void get(HttpServletResponse response/*,@PathVariable String value*/) throws FileNotFoundException{
+		 //fileMeta = files.get(Integer.parseInt(value));
 		 
 		 try {		
+			 System.out.println("download file name:"+fileMeta.getDownloadFileName());
 			 //writing download file in byte
-			 	File file = new File("/home/bridgelabz6/Pictures/files/"+getFile.getDownloadFileName());
+			 	File file = new File("/home/bridgelabz6/Pictures/files/"+fileMeta.getDownloadFileName());
 			    byte[] byteArray = new byte[(int) file.length()];
 			    byteArray = FileUtils.readFileToByteArray(file);
 			    //end of writing to bytes  
 			    
-			 	response.setContentType(getFile.getFileType());
-			 	response.setHeader("Content-disposition", "attachment; filename=\""+getFile.getDownloadFileName()+"\"");
+			 	response.setContentType(fileMeta.getFileType());
+			 	response.setHeader("Content-disposition", "attachment; filename=\""+fileMeta.getDownloadFileName()+"\"");
 		        FileCopyUtils.copy(byteArray, response.getOutputStream());
 		 }catch (IOException e) {
 				e.printStackTrace();
 		 }
 	 }
-	
-	@RequestMapping(value="done",method=RequestMethod.POST)
-	public void done(){
-		System.out.println("done");
-	}
  
 }

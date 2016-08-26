@@ -28,30 +28,18 @@ function callAjax() {
         
         //success function
         success: function (data) {
-        	//$('#info').html("File Uploaded ! Work is in Progress.!");
         	console.log("data",data)        	
         	
         	//displaying file details
             $.each(data, function (index, file) {
             	var totl = parseInt(file.totalGames);
             	var prog = parseInt(file.progress);
-            	if(prog<1)
-            		{
-                	
-                	$('#button').empty();
-                	$('#1').empty();
-                	$('#2').empty();
-                	$('#3').empty();
-                	$('#4').empty();
-            		}
-            	
-            	
-            	
+
             	if(data!=null){
             	$("#1").html(file.fileName);
             	$("#2").html(file.totalGames);
             	$("#3").html(file.progress);
-            	$("#4").html("<a href='rest/ajaxcontroller/get/"+index+"'>Download</a>");
+            	$("#4").html("<button>Download</button>");
             	
             	//storing total games and progress
             	/*var totl = parseInt(file.totalGames);
@@ -73,15 +61,18 @@ function callAjax() {
             	//if progress is less than total games call the controller again
         		if(prog<=totl)
         			{
-        			//$('#info').html("File Uploaded ! Work is in Progress.!");
+        			$('#button').hide();
+        			$('#info').html("File Uploaded ! Work is in Progress.!");
         			alert("1 loop");
         			callAjax();
         			}
-        		else
+        		if(prog==totl)
         			{
         			//completed the JSOUP process
+        			alert("comp")
         			$('#info').html("JSOUP Completed");
-        			//$('#button').prop('disabled', false);
+        			$('#button').show();
+        			$("#4").html("<a href='rest/ajaxcontroller/get/'><button>Download</button></a>");
         			return false;
         			}
             });//end of each loop

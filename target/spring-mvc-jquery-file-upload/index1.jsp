@@ -32,6 +32,10 @@
 	<div id="progress" class="progress">
     	<div class="bar" style="width: 0%;"></div>
 	</div>
+		<div id="progress1" class="progress">
+    	<div class="bar" style="width: 0%;"></div>
+	</div>
+	
 	<div id="output" style="display:none">File Uploaded </div>
 	
 	<div id="content"></div>

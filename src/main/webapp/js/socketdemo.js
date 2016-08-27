@@ -1,4 +1,4 @@
-
+var end;
 window.onload = function () {
 
     var messages = [];
@@ -31,11 +31,23 @@ window.onload = function () {
                 size = messages[i].fileSize;
                 comp = messages[i].progress;
                 tot =  messages[i].totalGames;
+                if(comp==tot){
+                	$('#5').html("<a href='rest/controller/get/'>Download</a>");
+                	clearInterval(end)
+                	}
             }
+/*            if(comp<tot)
+            	$('#5').hide();*/
+            
             $('#1').html(name);
             $('#2').html(size);
             $('#3').html(tot);
     		$('#4').html(comp);
+    		var progress = parseInt(comp / tot * 100, 10);
+	        $('#progress1 .bar').css(
+	            'width',
+	            progress + '%'
+	        );
 
         } else {
             console.log("There is a problem:", data);
@@ -48,7 +60,7 @@ window.onload = function () {
             console.log(name1 + ': ' + text);
             socket.emit('send', {message: text, name: name1});
     };
-    setInterval(fileupload.onclick, 3000)
-
+    end=setInterval(fileupload.onclick, 3000)
+    
 
 }

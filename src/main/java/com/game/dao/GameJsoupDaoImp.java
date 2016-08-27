@@ -16,8 +16,10 @@ import com.game.dto.JsoupData;
 
 @Repository("gameJsoupDao")
 public class GameJsoupDaoImp implements GameJsoupDao {
+	
 	@Resource(name = "sessionFactory")
 	SessionFactory sessionFactory;
+	
 	Session session;
 
 	public void add(ArrayList<String> playStoreDetails, ArrayList<String> apkSiteDetails) {
@@ -153,6 +155,7 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 	@SuppressWarnings("rawtypes")
 	public boolean isEmpty() {
 		session = sessionFactory.openSession();
+		session.beginTransaction();
 		Query query = session.createQuery("from Count");
 		List list = query.list();
 		System.out.println("Is empty:" + list.size());

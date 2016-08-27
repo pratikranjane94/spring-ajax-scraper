@@ -7,14 +7,9 @@ $(function () {
 	            'width',
 	            progress + '%'
 	        );
-	        //$("#output").html("Completed").show();
-	        //$("#output").show();
    		},
         done: function (e, data) {
-        	//$("tr:has(td)").remove();
-            $.each(data.result, function (index, file) {
-            	$('#5').html("<a href='rest/controller/get/"+index+"'>click</a>");
-            }); 
+        	alert("done")
         },
 		dropZone: $('#dropzone')
     });

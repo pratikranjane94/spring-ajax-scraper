@@ -203,7 +203,7 @@ public class AjaxFileController {
 						if (status == false) {
 							gameNotFound.addGameNotFoundInFile("DlApk", temp, downloadFileName);
 						}
-					} // end of if
+					} // end of else
 				    
 					no=gameJsoupDao.checkProgress(fileName,id);
 					System.out.println("current progress:"+gameJsoupDao.checkProgress(fileName,id));

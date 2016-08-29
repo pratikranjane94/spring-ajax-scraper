@@ -1,3 +1,9 @@
+/*File Name		: ApkSiteDataFetching.java
+ *Created By	: PRATIK RANJANE
+ *Purpose		: Getting game information from APK-DL.com such as Game name, Version, Size,
+ *				  Publish date, APK Download Link and storing it into CSV file.
+ * */
+
 package com.game.model;
 
 import java.io.BufferedWriter;
@@ -17,10 +23,12 @@ public class ApkSiteDataFetching {
 		
 		ArrayList<String> s = new ArrayList<String>();
 		ArrayList<String> apkSiteDetails = new ArrayList<String>();
-		String apk = "https://apk-dl.com/";
-		String apkSite = apk.concat(pack);
+		
 		String downUrl;
-		// System.out.println(apkSite);
+		String apk = "https://apk-dl.com/";
+		
+		//appending package name with APK-DL site
+		String apkSite = apk.concat(pack);
 
 		try {
 			// fetch the document over HTTP
@@ -33,14 +41,15 @@ public class ApkSiteDataFetching {
 			String info1 = doc.getElementsByClass("info").select("div:has(span:contains(File Size:))").text();
 
 			// getting data from info class
-			String genre = info.select("[itemprop=applicationCategory]").attr("content"); // getting genre
-			String title = info.select("[itemprop=name]").attr("content"); // getting title
-			String version = info.select("[itemprop=softwareVersion]").attr("content"); // getting version
-			String pDate = info.select("[itemprop=datePublished]").attr("content"); // getting publish date
+			String genre = info.select("[itemprop=applicationCategory]").attr("content"); 	// getting genre
+			String title = info.select("[itemprop=name]").attr("content"); 					// getting title
+			String version = info.select("[itemprop=softwareVersion]").attr("content"); 	// getting version
+			String pDate = info.select("[itemprop=datePublished]").attr("content"); 		// getting publish date
 
 			pDate = pDate.replace(",", " "); // replacing comma in date with space
 
-			StringTokenizer st = new StringTokenizer(info1, ": "); // Tokenizer to find size
+			//getting game size
+			StringTokenizer st = new StringTokenizer(info1, ": "); // TOKENIZER to find size
 			while (st.hasMoreTokens()) {
 				s.add(st.nextToken()); // adding words from meta data to array list
 			}
@@ -49,14 +58,14 @@ public class ApkSiteDataFetching {
 
 			//getting download link
 			String downLink = doc.getElementsByClass("btn-md").attr("href");
-			if (downLink.contains("http") == false) // checking whether download url/link contains "http"
+			if (downLink.contains("http") == false) // checking whether download URL/link contains "HTTP"
 				downLink = ("http:").concat(downLink.trim());
 
-			//scrapping download url to get download link
+			//scraping download URL to get download link
 			Document doc1 = Jsoup.connect(downLink).userAgent("Chrome/47.0.2526.80").timeout(10000).get();
 			downUrl = doc1.getElementsByTag("p").select("a[href]").attr("href");
 			if (downUrl != "") {
-				if (downUrl.contains("http") == false) // adding "http" to link if not present
+				if (downUrl.contains("http") == false) // adding "HTTP" to link if not present
 				{
 					downUrl = ("http:").concat(downUrl);
 				}
@@ -75,8 +84,8 @@ public class ApkSiteDataFetching {
 				apkSiteDetails.add(pDate);
 				apkSiteDetails.add(downUrl);
 				
-				System.out.println("");
 				System.out.println("----------Dl-apk site data--------------");
+				
 				// displaying game info
 				System.out.println("Title: " + title);
 				System.out.println("Apk Site genre: " + genre);
@@ -100,7 +109,8 @@ public class ApkSiteDataFetching {
 		return apkSiteDetails;
 	}
 
-	public boolean createCsv(ArrayList<String> apkSiteDetails,String downloadFileName) // creating json file of fetched info	
+					// Creating JSON file of fetched info
+	public boolean createCsv(ArrayList<String> apkSiteDetails,String downloadFileName) 	
 	{
 			try {
 			String title = apkSiteDetails.get(0);
@@ -113,6 +123,7 @@ public class ApkSiteDataFetching {
 			File file = new File("/home/bridgelabz6/Pictures/files/"+downloadFileName);
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
+			
 			// if file doesn't exists, then create it
 			if (!file.exists()) {
 				file.createNewFile();

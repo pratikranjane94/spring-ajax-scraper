@@ -1,10 +1,10 @@
-package com.game.socket;
+package com.game.dto;
 
 public class Message {
-	private String fileName;
-	private String totalGames;
-	private String progress;
-    private String name;
+	private String fileName;		
+	private String totalGames;		
+	private String progress;		
+    private String name;			
     private String message;
     private String fileSize;
     
@@ -19,9 +19,9 @@ public class Message {
 		this.progress = progress;
 	}
 
-	public Message(String name, String message) {
-        this.name = name;
-        this.message = message;
+	public Message(String fileName, String totalGames) {
+        this.totalGames = totalGames;
+        this.fileName = fileName;
     }
 	public String getName() {
         return name;

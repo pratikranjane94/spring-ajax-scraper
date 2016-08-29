@@ -1,3 +1,9 @@
+/*File Name		: GameNotFound.java
+ *Created By	: PRATIK RANJANE
+ *Purpose		: Handling Exceptions ,storing name of games in other files that 
+ *					have some exception.
+ * */
+
 package com.game.model;
 
 import java.io.BufferedWriter;
@@ -8,7 +14,7 @@ public class GameNotFound {
 	public void addGameNotFoundInFile(String fileName,String temp,String downloadFileName)
 	{
 		try {
-			//adding game name who's play store data is not fetched
+			//adding game name who's data is not fetched
 			File notFetched = new File("/home/bridgelabz6/Pictures/files/"+fileName+"StoreNotFetched.csv");
 			FileWriter fw = new FileWriter(notFetched.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
@@ -26,12 +32,12 @@ public class GameNotFound {
 				asd.createNewFile();
 			}
 
-			//if jsoup data not found store game name in game not found csv file
+			//if JSOUP data not found store game name in game not found csv file
 			bw.append(temp);
 			bw.append("^");
 			bw.newLine();
 			
-			//adding new line in csv file if data not found for alignment
+			//adding new line in CSV file if data not found for alignment
 			asdbw.newLine();
 			
 			bw.close();
@@ -41,6 +47,7 @@ public class GameNotFound {
 		}
 	}
 	
+	//adding game name if URL or PlayStore data is not fetched
 	public void addGameNotFound(String fileName,String temp)
 	{
 		try {
@@ -53,6 +60,7 @@ public class GameNotFound {
 
 			FileWriter fw = new FileWriter(notFetched.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
+			
 			bw.append(temp);
 			bw.append("^");
 			bw.newLine();

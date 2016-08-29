@@ -38,12 +38,11 @@ import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.game.dao.GameJsoupDaoImp;
 import com.game.dto.FileMeta;
+import com.game.dto.Message;
 import com.game.model.ApkSiteDataFetching;
 import com.game.model.GameNotFound;
 import com.game.model.PlayStoreDataFetching;
 import com.game.model.PlayStoreUrlFetching;
-
-import com.game.socket.Message;
 
 @RestController
 @EnableWebMvc
@@ -257,7 +256,6 @@ public class FileController {
 								System.out.println("onSend: " + data.toString());
 								data.setFileName(fileName);
 								data.setFileSize(fileSize);
-								data.setName("File Progress");
 								System.out.println("progress:" + progress);
 								data.setProgress(Integer.toString(progress));
 								data.setTotalGames(Integer.toString(totoalGames));

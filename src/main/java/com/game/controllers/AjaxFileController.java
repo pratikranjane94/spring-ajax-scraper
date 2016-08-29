@@ -1,8 +1,8 @@
-/*File Name	: AjaxFileController.java
- *Created By: PRATIK RANJANE
- *Purpose	: Getting the uploaded file, creating JOUSP of games presents in files,
- *			  creating CSV file of details of games, showing file info and progress on web page using java and AJAX.
- *			  Providing JSOUP created CSV file for Downloading.
+/*File Name		: AjaxFileController.java
+ *Created By	: PRATIK RANJANE
+ *Purpose		: Getting the uploaded file, creating JOUSP of games presents in files,
+ *			  		creating CSV file of details of games, showing file info and progress on web page using java and AJAX.
+ *			  		Providing JSOUP created CSV file for Downloading.
  * */
 
 package com.game.controllers;
@@ -53,17 +53,17 @@ public class AjaxFileController {
 	ArrayList<String> playStoreDetails = new ArrayList<String>();
 	ArrayList<String> apkSiteDetails = new ArrayList<String>();
 
-	String url = ""; // Play Store URL
-	String line; // line read from file and stores game name
-	String temp = ""; // stores game name temporarily
-	String fileName; // name of uploaded file
-	String downloadFileName; // downloading name for file
-	int id = 0; // unique id for each uploaded file
-	int no = 0; // no of game's JSOUP completed
-	int count; // temporary stores total no of game in file
-	int totoalGames = 0; // total games in file
-	boolean status = true; // status of APK-DL CSV created or not
-	boolean psStatus = true; // status of PlayStore CSV created or not
+	String url = ""; 			// Play Store URL
+	String line; 				// line read from file and stores game name
+	String temp = ""; 			// stores game name temporarily
+	String fileName; 			// name of uploaded file
+	String downloadFileName; 	// downloading name for file
+	int id = 0; 				// unique id for each uploaded file
+	int no = 0; 				// no of game's JSOUP completed
+	int count; 					// temporary stores total no of game in file
+	int totoalGames = 0; 		// total games in file
+	boolean status = true; 		// status of APK-DL CSV created or not
+	boolean psStatus = true; 	// status of PlayStore CSV created or not
 
 	/*-------------------------------------------Creating JSOUP of Uploaded File-------------------------------------------*/
 

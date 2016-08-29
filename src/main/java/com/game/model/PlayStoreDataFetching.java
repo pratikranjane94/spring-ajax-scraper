@@ -1,3 +1,9 @@
+/*File Name		: PlayStoreDataFetching.java
+ *Created By	: PRATIK RANJANE
+ *Purpose		: Getting game information from PlayStore such as Game name, Version, Size,
+ *				  Publish date, Package name and storing it into CSV file.
+ * */
+
 package com.game.model;
 
 import java.io.BufferedWriter;
@@ -11,10 +17,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 public class PlayStoreDataFetching {
-	public ArrayList<String> getPlayStoreData(String url)// displaying game info from play store
+	
+			/*-----------------------Scraping PlayStore site data---------------------------*/
+	
+	public ArrayList<String> getPlayStoreData(String url)
 	{
-		String[] cate=null;
-		boolean found = false;
+
 		ArrayList<String> playStoreDetails = new ArrayList<String>();
 		// ArrayList<String> err=new ArrayList<String>();
 		try {
@@ -35,13 +43,16 @@ public class PlayStoreDataFetching {
 			String title = t.select("[class=id-app-title]").text();
 			String genre = g.select("[itemprop=genre]").text();
 			String version = info.select("[itemprop=softwareVersion]").text();
+			String size = info.select("[itemprop=fileSize]").text();
+			String pDate = info.select("[itemprop=datePublished]").text();
 			
-			
-			/*--------------logo and is game jsoup---------*/
-/*			String imageurl=doc.getElementsByClass("cover-container").select("[itemprop=image]").attr("src");
+			/*--------------LOGO and is game JSOUP---------*/
+			/*			String[] cate=null;
+			boolean found = false;
+			String imageUrl=doc.getElementsByClass("cover-container").select("[itemprop=image]").attr("src");
 			if(!imageurl.contains("http"))
-				imageurl=("http:").concat(imageurl);
-			System.out.println("image url"+imageurl);
+				imageUrl=("http:").concat(imageUrl);
+			System.out.println("image url"+imageUrl);
 			String category=g.select("[class=document-subtitle category]").attr("href").toLowerCase();
 			System.out.println("Category:"+category);
 				if(category.contains("game"))
@@ -58,10 +69,8 @@ public class PlayStoreDataFetching {
 					version = newVer.replaceAll("[^0-9.]", ""); 
 					System.out.println("new version:"+version);
 			}*/
-			String size = info.select("[itemprop=fileSize]").text();
-			String pDate = info.select("[itemprop=datePublished]").text();
-			
-			//if no data fetched
+
+			//if no data fetched return null
 			if (title.equals("") && genre.equals("") && version.equals("") && size.equals("") && pDate.equals("")
 					&& pack.equals("")) {
 				return null;
@@ -75,7 +84,7 @@ public class PlayStoreDataFetching {
 				
 				System.out.println("----------Play Store Data--------------");
 				
-				// showing game name
+				// showing game details
 				System.out.println("Title of Game: " + title);
 				System.out.println("Genre:" + genre);
 				System.out.println("Version: " + version);
@@ -103,7 +112,7 @@ public class PlayStoreDataFetching {
 		return playStoreDetails;
 	}
 
-	public boolean createCsv(ArrayList<String> playStoreDetails,String downloadFileName) // creating csv file for play store data
+	public boolean createCsv(ArrayList<String> playStoreDetails,String downloadFileName) // creating CSV file for play store data
 	{
 		String title = playStoreDetails.get(0);
 		String genre = playStoreDetails.get(1);
@@ -112,10 +121,11 @@ public class PlayStoreDataFetching {
 		String pDate = playStoreDetails.get(4);
 		String pack = playStoreDetails.get(5);
 		try {
-			File file = new File("/home/bridgelabz6/Pictures/files/"+downloadFileName); //adding data to csv
+			File file = new File("/home/bridgelabz6/Pictures/files/"+downloadFileName); //adding data to CSV
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
 			System.out.println("file exists:"+file.exists());
+			
 			// if file doesn't exists, then create it
 			if (!file.exists()) {
 				file.createNewFile();
@@ -169,9 +179,9 @@ public class PlayStoreDataFetching {
 
 	}
 
+	// getting package name from PlayStore URL
 	public String getPackage(ArrayList<String> playStoreDetails) {
-		String pack = playStoreDetails.get(5); // getting package name from playstore url
-												
+		String pack = playStoreDetails.get(5); 							
 		return pack;
 	}
 

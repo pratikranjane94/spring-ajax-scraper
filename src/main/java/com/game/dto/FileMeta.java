@@ -1,18 +1,20 @@
+/*File Name	: FileMeta.java
+ *Created By: PRATIK RANJANE
+ *Purpose	: Storing details of uploaded file
+ * */
+
 package com.game.dto;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-@JsonIgnoreProperties({"bytes"})
 public class FileMeta {
 
-	private String fileName;
-	private String fileSize;
-	private String fileType;
-	private byte[] bytes;
-	private byte[] downBytes;
-	private String downloadFileName;
-	private int totalGames;
-	private int progress;
+	private String fileName;			//name of file uploaded
+	private String fileSize;			//size of file uploaded
+	private String fileType;			//type of file uploaded
+	private byte[] bytes;				//uploaded file is stored in bytes
+	private byte[] downBytes;			//JSOUP file is stored
+	private String downloadFileName;	//JSOUP file name(i.e Download name)
+	private int totalGames;				//no of games in file
+	private int progress;				//no of game JSOUP done
 	
 	public int getProgress() {
 		return progress;

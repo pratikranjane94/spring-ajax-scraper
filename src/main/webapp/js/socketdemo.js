@@ -19,41 +19,40 @@ window.onload = function () {
     socket.on('message', function (data) {
         if (data.message) {
             messages.push(data);
-            var html = '';
             var size = '';
-            var comp = '';
-            var tot = '';
+            var completed = '';
+            var total = '';
             var name = '';
             for (var i = 0; i < messages.length; i++) {
-                html = '<b>' + (messages[i].name ? messages[i].name : 'Server') + ': </b>';
-//              html = messages[i].message + '<br />';
                 name = messages[i].fileName;
                 size = messages[i].fileSize;
-                comp = messages[i].progress;
-                tot =  messages[i].totalGames;
-                if(comp==tot){
+                completed = messages[i].progress;
+                total =  messages[i].totalGames;
+                
+                if(completed==total){
                 	$('#5').html("<a href='rest/controller/get/'>Download</a>");
                 	clearInterval(end)
                 	}
-            }
-/*            if(comp<tot)
-            	$('#5').hide();*/
+            }//end of for
             
-            $('#1').html(name);
-            $('#2').html(size);
-            $('#3').html(tot);
-    		$('#4').html(comp);
-    		var progress = parseInt(comp / tot * 100, 10);
+            $('#1').html(name);	//displaying file name
+            $('#2').html(size);	//displaying file size
+            $('#3').html(total);	//displaying total games
+    		$('#4').html(completed);	//displaying progress
+    		
+    		//updating progress bar
+    		var progress = parseInt(completed / total * 100, 10);
 	        $('#progress1 .bar').css(
 	            'width',
 	            progress + '%'
-	        );
+	        );//end of progress bar
 
         } else {
             console.log("There is a problem:", data);
         }
-    });
+    });//end of socket.on('message') function
 
+    //on file uploaded function
     fileupload.onclick = function () {
         	var text = " ";
         	var name1=" ";

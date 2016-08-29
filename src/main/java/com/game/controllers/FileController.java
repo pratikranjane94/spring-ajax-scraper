@@ -1,7 +1,7 @@
 /*File Name	: FileController.java
- *Created By: Pratik Ranjane
- *Purpose	: Getting the uploaded file, creating JOUSP of games presents in files,
- *			  creating CSV file of details of games,
+ *Created By: PRATIK RANJANE
+ *Purpose	: Storing the uploaded file, creating JOUSP of games presents in files,
+ *			  creating CSV file of details of games using and displaying on web page using Socket,
  *			  Downloading the file. 
  * */
 package com.game.controllers;
@@ -66,55 +66,56 @@ public class FileController {
 	LinkedList<FileMeta> files = new LinkedList<FileMeta>();
 	ArrayList<String> playStoreDetails = new ArrayList<String>();
 	ArrayList<String> apkSiteDetails = new ArrayList<String>();
-
-	String url = "";
-	String line;
-	String temp = "";
-	String fileSize;
-	String msg = "started";
-	String fileName;
-	String downloadFileName;
-	int progress = 0;
-	int count;
-	int id;
-	int no;
-	int totoalGames = 0;
-	boolean status = true;
-	boolean psStatus = true;
+ 
+	String url = "";			//Play Store URL
+	String line;				//line read from file and stores game name
+	String temp = "";			//game name temporary
+	String fileSize;			//size of uploaded file
+	String fileName;			//name of uploaded file
+	String downloadFileName;	//downloading name for file
+	int progress = 0;			//no of game's JSOUP completed
+	int count;					//temporary stores total no of game in file
+	int id;						//unique id for each uploaded file
+	int totoalGames = 0;		//total games in file
+	boolean status = true;		//status of APK-DL CSV created or not
+	boolean psStatus = true;	//status of PlayStore CSV created or not
 
 	
-					// Uploading file to local disk
+	/*-------------------------------------------Creating JSOUP of Uploaded File-------------------------------------------*/
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public @ResponseBody LinkedList<FileMeta> upload(MultipartHttpServletRequest request, HttpServletResponse response)
 			throws IOException {
+		
+		System.out.println("Ajax socket file controller");
 
-		/*---------------Web Socket Configuration----------*/
+							/*---------------Web Socket Configuration----------*/
 		config = new Configuration();
 		config.setHostname("localhost");
 		config.setPort(3400);
+		
 		server = new SocketIOServer(config);
+		
 		server.addConnectListener(new ConnectListener() {
 			@Override
 			public void onConnect(SocketIOClient client) {
-				System.out.println("onConnected");
-				client.sendEvent("message", new Message("hello", "Welcome to the chat!", "0"));
+				System.out.println("Connected");
 			}
 		});
+		
 		System.out.println("Starting server...");
 		server.start();
 		System.out.println("Server started");
-		/*---------------end of web socket connection----------*/
+							/*---------------end of web socket connection----------*/
 
-		/*---------------iterator for multiple files-----------------*/
+							/*---------------iterator for getting file-------------*/
 
 		Iterator<String> itr = request.getFileNames();
 		
-
 		// get each file
 		while (itr.hasNext()) {
 
-			// get next MULTIPART file and its information
+			// get uploaded MULTIPART file and its information
 
 			mpf = request.getFile(itr.next());
 			System.out.println(mpf.getOriginalFilename() + " uploaded! ");
@@ -122,11 +123,11 @@ public class FileController {
 			fileName = mpf.getOriginalFilename();
 			downloadFileName = mpf.getOriginalFilename().replace(".", "Download.");
 
-			/*---------------end of iterator for multiple files-----------------*/
+					/*---------------end of iterator for getting files-----------------*/
 
 			fileSize = mpf.getSize() / 1024 + " Kb";
 
-			// storing data in file meta
+			// storing data in file meta class
 			fileMeta = new FileMeta();
 			fileMeta.setFileName(fileName);
 			fileMeta.setFileSize(mpf.getSize() / 1024 + " Kb");
@@ -135,20 +136,24 @@ public class FileController {
 			try {
 				fileMeta.setBytes(mpf.getBytes());
 
-				// copy file to local disk
+				// copy uploaded file to local disk
 				FileCopyUtils.copy(mpf.getBytes(),
 						new FileOutputStream("/home/bridgelabz6/Pictures/files/" + fileName));
 
-				// counting no of games
+				// counting no of games in file
 				FileReader frCount = new FileReader("/home/bridgelabz6/Pictures/files/" + fileName);
 				BufferedReader brCount = new BufferedReader(frCount);
 				while (brCount.readLine() != null) {
 					count++;
 				}
 				totoalGames = count - 1;
+				
+				//reseting count to zero
 				count = 0;
+				
 				fileMeta.setTotalGames(totoalGames);
 				System.out.println("totoalGames:" + totoalGames);
+				
 				brCount.close();
 				// end of counting game
 
@@ -162,6 +167,7 @@ public class FileController {
 					System.out.println("file is empty");
 				} else {
 					line = br.readLine();
+					
 					for (progress = 0; progress < totoalGames; progress++) {
 
 						fileMeta.setProgress(progress);
@@ -197,8 +203,7 @@ public class FileController {
 						// creating CSV file of play store data
 						psStatus = psdf.createCsv(playStoreDetails, downloadFileName);
 
-						// handling exception in creating play store data CSV
-						// file
+						// handling exception in creating play store data CSV file
 						if (psStatus == false) {
 							gameNotFound.addGameNotFoundInFile("PlayStore", temp, downloadFileName);
 						}
@@ -238,11 +243,13 @@ public class FileController {
 								id = id + 1;
 							}
 						}
-
+						
+						//data is inserted into database
 						gameJsoupDao.insert(id, progress + 1, fileName, playStoreDetails, apkSiteDetails);
 
 						// end of database entry
 
+						//socket listener which send file info to AJAX 
 						server.addEventListener("send", Message.class, new DataListener<Message>() {
 							@Override
 							public void onData(SocketIOClient client, Message data, AckRequest ackSender)
@@ -251,15 +258,16 @@ public class FileController {
 								data.setFileName(fileName);
 								data.setFileSize(fileSize);
 								data.setName("File Progress");
-								System.out.println("Socket progress:" + Integer.toString(progress));
 								System.out.println("progress:" + progress);
 								data.setProgress(Integer.toString(progress));
 								data.setTotalGames(Integer.toString(totoalGames));
 								server.getBroadcastOperations().sendEvent("message", data);
 							}
-						});
+						});//end of socket listener
+						
 						System.out.println("For progress:" + progress);
 					} // end of for
+					
 					String fileNameID = fileName.replace(".", Integer.toString(id) + ".");
 					gameJsoupDao.update(fileNameID, id);
 				} // end of else
@@ -268,9 +276,10 @@ public class FileController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			// add to files
+			// adding metaFile info to ArrayList files
 			files.add(fileMeta);
 
+			// concatenating ID with filename 
 			String fileNameID = fileName.replace(".", Integer.toString(id) + ".");
 			String downloadFileNameID = downloadFileName.replace(".", Integer.toString(id) + ".");
 
@@ -280,26 +289,23 @@ public class FileController {
 			File oldDownloadfile = new File("/home/bridgelabz6/Pictures/files/" + downloadFileName);
 			File newDownloadfile = new File("/home/bridgelabz6/Pictures/files/" + downloadFileNameID);
 
-			System.out.println("File Names:" + fileNameID);
-
-			System.out.println("File exist?" + oldFile.exists());
-
 			// renaming old file name to new
 			if (oldFile.renameTo(newFile))
 				System.out.println("File renamed");
 			else
-				System.out.println("Sorry! the file can't be renamed");
+				System.out.println("Sorry! File can't be renamed");
 
 			// renaming old download file name to new
 			fileMeta.setDownloadFileName(downloadFileNameID);
 			if (oldDownloadfile.renameTo(newDownloadfile))
 				System.out.println("File renamed");
 			else
-				System.out.println("Sorry! the file can't be renamed");
+				System.out.println("Sorry! File can't be renamed");
 
-			System.out.println("---------------------------------------End Of Program------------------------------------------------");
+			System.out.println("-----------End Of Program-----------");
 		}
 
+		//socket disconnect listener
 		server.addDisconnectListener(new DisconnectListener() {
 			@Override
 			public void onDisconnect(SocketIOClient client) {
@@ -309,9 +315,9 @@ public class FileController {
 			}
 		});
 		return files;
-	}
+	}//End of creating JSOUP function
 
-	// download file
+	/*-------------------------------------------Download file to local storage-------------------------------------------*/
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public void get(HttpServletResponse response) throws FileNotFoundException {
 		try {
@@ -330,6 +336,6 @@ public class FileController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}//End of Downloading file function
 
-}
+}//End of class
